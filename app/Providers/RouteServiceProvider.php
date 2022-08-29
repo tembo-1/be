@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
+    /*
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -44,9 +44,19 @@ class RouteServiceProvider extends ServiceProvider
                     require_once base_path('routes/admin.php');
                 });
         });
+    */
     }
 
+    private $middlewares = [];
 
+    // Маршруты сайта
+    protected function mapWebSiteRoutes()
+    {
+        Route::middleware(['web', ...$this->middlewares])
+            ->name('site.')
+            ->namespace($this->namespace . '\\Site')
+            ->group(base_path('routes/web-site.php'));
+    }
 
     /**
      * Configure the rate limiters for the application.
